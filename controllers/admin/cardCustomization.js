@@ -1,6 +1,6 @@
 const Cards = require('../../models/card');
 const {success_response, error_response} = require('../../utils/response');
-
+const API_URL = process.env.API_URL;
 
 exports.createCard = async (req, res) => {
     try {
@@ -200,6 +200,48 @@ exports.destroyCard = async (req, res) => {
         }
 
         return success_response(res, 200, "Card deleted successfully", card);
+    } catch (error) {
+        console.log(error);
+        return error_response(res, 500, error.message);
+    }
+};
+
+
+exports.getAllFrontDesignCards = async (req, res) => {
+    try {
+        const allCards = await Cards.find().sort({createdAt: -1});
+        return success_response(res, 200, "All front design card fetch successfully", allCards);
+    } catch (error) {
+        console.log(error);
+        return error_response(res, 500, error.message);
+    }
+};
+
+exports.getCardForGame = async (req, res) => {
+    try {
+
+
+        const {id} = req.params;
+
+        if (!id) {
+            return error_response(res, 400, "Id is required!");
+        }
+
+        const card = await Cards.findOne({_id: id});
+
+        if (!card) {
+            return error_response(res, 400, "Card not found!");
+        }
+
+        const data = {
+            ...card._doc,
+            frontDesign: `${API_URL}/${card.frontDesign.replace(/\\/g, "/")}`,
+            backDesign: `${API_URL}/${card.backDesign.replace(/\\/g, "/")}`,
+            insideLeftDesign: `${API_URL}/${card.insideLeftDesign.replace(/\\/g, "/")}`,
+            insideRightDesign: `${API_URL}/${card.insideRightDesign.replace(/\\/g, "/")}`,
+            video: `${API_URL}/${card.video.replace(/\\/g, "/")}`
+        };
+        return success_response(res, 200, "Card get successfully", data);
     } catch (error) {
         console.log(error);
         return error_response(res, 500, error.message);

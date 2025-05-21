@@ -6,7 +6,7 @@ const cardSchema = new mongoose.Schema({
     cardType: {
         type: String,
         required: true,
-        enum: ['birthday', 'marriage', 'mothers day', 'fathers day', 'anniversary', 'valentines day'],
+        enum: ['birthday', 'marriage', 'mothers day', 'fathers day', 'sister day','anniversary', 'valentines day', 'marry christmas'],
     },
     price: {
         type: Number, required: true
