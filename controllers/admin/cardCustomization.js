@@ -1,4 +1,5 @@
 const Cards = require('../../models/card');
+const CardsCustomization = require('../../models/card_customization');
 const {success_response, error_response} = require('../../utils/response');
 const API_URL = process.env.API_URL;
 
@@ -10,7 +11,7 @@ exports.createCard = async (req, res) => {
             return error_response(res, 400, "All inputs are required!");
         }
 
-        cardType = cardType.toLowerCase();
+        // cardType = cardType.toLowerCase();
 
         const createCard = await Cards.create({
             title, cardType, price
@@ -205,11 +206,9 @@ exports.destroyCard = async (req, res) => {
         return error_response(res, 500, error.message);
     }
 };
-
-
 exports.getAllFrontDesignCards = async (req, res) => {
     try {
-        const allCards = await Cards.find().sort({createdAt: -1});
+        const allCards = await Cards.find().sort({createdAt: 1});
         return success_response(res, 200, "All front design card fetch successfully", allCards);
     } catch (error) {
         console.log(error);
@@ -242,6 +241,26 @@ exports.getCardForGame = async (req, res) => {
             video: `${API_URL}/${card.video.replace(/\\/g, "/")}`
         };
         return success_response(res, 200, "Card get successfully", data);
+    } catch (error) {
+        console.log(error);
+        return error_response(res, 500, error.message);
+    }
+};
+
+
+exports.uploadARTemplateData = async (req, res) => {
+    try {
+        let {userId, cardId, arTemplateData} = req.body;
+
+        if (!(userId && cardId && arTemplateData)) {
+            return error_response(res, 400, "All inputs are required!");
+        }
+
+        const customize = await CardsCustomization.create({
+            userId, cardId, arTemplateData
+
+        })
+        return success_response(res, 200, "AR template data save successfully", customize);
     } catch (error) {
         console.log(error);
         return error_response(res, 500, error.message);

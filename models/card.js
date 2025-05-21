@@ -4,10 +4,15 @@ const cardSchema = new mongoose.Schema({
 
     title: {type: String, required: true},
     cardType: {
-        type: String,
+        type: [String],
         required: true,
-        enum: ['birthday', 'marriage', 'mothers day', 'fathers day', 'sister day','anniversary', 'valentines day', 'marry christmas'],
+
     },
+    // cardType: {
+    //     type: String,
+    //     required: true,
+    //     enum: ['birthday', 'marriage', 'mothers day', 'fathers day', 'sister day','anniversary', 'valentines day', 'marry christmas'],
+    // },
     price: {
         type: Number, required: true
     },

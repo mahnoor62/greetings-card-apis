@@ -1,4 +1,4 @@
-const GameCustomization = require('../models/game_customization');
+const GameCustomization = require('../models/card_customization');
 // const TempUser = require('../models/temp_user');
 
 exports.get_record = async (userId, gameId) => {

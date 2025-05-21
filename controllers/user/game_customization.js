@@ -1,9 +1,9 @@
 const {success_response, error_response} = require('../../utils/response');
 const {get_record} = require('../../utils/get_record');
 const Game = require('../../models/game');
-const Game_Customization = require('../../models/game_customization');
+const Game_Customization = require('../../models/card_customization');
 const Transaction = require('../../models/transaction');
-const GameCustomization = require("../../models/game_customization");
+const GameCustomization = require("../../models/card_customization");
 
 exports.update_background_image = async (req, res) => {
     try {

@@ -1,6 +1,6 @@
 const Game = require('../../models/game');
 const {success_response, error_response} = require('../../utils/response');
-const Game_Customization = require("../../models/game_customization");
+const Game_Customization = require("../../models/card_customization");
 const Transaction = require("../../models/transaction");
 
 exports.get_all_games = async (req, res) => {

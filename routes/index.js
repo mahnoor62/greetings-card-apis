@@ -26,13 +26,13 @@ app.use('/temporary-user', TempUser);
 
 //admin routes:
 const Admin = require('./admin/admin');
-const Games = require('./admin/game');
+
 const Profile = require('./admin/profile');
 const Transaction = require('./admin/transaction');
 const Bank = require('./admin/bank');
 
 app.use('/admin', Admin);
-app.use('/admin', Games);
+
 app.use('/admin', Transaction);
 app.use('/admin', Profile);
 app.use('/admin', Bank);

@@ -3,7 +3,7 @@ const Game = require('../../models/game');
 const {temp_user} = require('../../utils/get_record');
 const {v4: uuidv4} = require('uuid');
 const TempUser = require('../../models/temp_user');
-const GameCustomization = require("../../models/game_customization");
+const GameCustomization = require("../../models/card_customization");
 const Transaction = require("../../models/transaction");
 
 

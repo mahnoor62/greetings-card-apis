@@ -1,4 +1,4 @@
-const GameCustomization = require('../../models/game_customization');
+const GameCustomization = require('../../models/card_customization');
 const {success_response, error_response} = require('../../utils/response');
 const Game = require('../../models/game');
 

@@ -1,7 +1,7 @@
 const Transaction = require('../../models/transaction');
 const {success_response, error_response} = require('../../utils/response');
 const Game = require('../../models/game');
-const Game_Customization = require('../../models/game_customization');
+const Game_Customization = require('../../models/card_customization');
 const nodemailer = require("nodemailer");
 const User = require('../../models/user');
 
