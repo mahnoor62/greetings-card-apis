@@ -19,7 +19,7 @@ router.post('/upload-template-data', uploadARTemplateData);
 router.get('/get-all', middleWare, getAllCards);
 router.get('/get-all-front-design', getAllFrontDesignCards);
 router.get('/get/:id', middleWare, getCard);
-router.get('/get/data/:id', middleWare, getCardForGame);
+router.get('/get/data/:id', getCardForGame);
 router.delete('/destroy/:id', middleWare, destroyCard);
 router.post('/upload-front-design', [middleWare, uploadMiddleware('Cards').single('frontDesign')], uploadFrontDesign);
 router.post('/upload-back-design', [middleWare, uploadMiddleware('Cards').single('backDesign')], uploadBackDesign);
