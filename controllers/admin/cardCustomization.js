@@ -23,6 +23,39 @@ exports.createCard = async (req, res) => {
         return error_response(res, 500, error.message);
     }
 };
+exports.EditCard = async (req, res) => {
+    try {
+        let {title, cardType, price, id} = req.body;
+
+        if (!id) {
+            return error_response(res, 400, "Id is  required!");
+        }
+
+        const card = await Cards.findOne({_id: id});
+
+
+        if (!card) {
+            return error_response(res, 400, "Card not found!");
+        }
+
+        if (title) {
+            card.title = title;
+        }
+
+        if (price) {
+            card.price = price;
+        }
+        if (cardType) {
+            card.cardType = cardType;
+        }
+
+        await card.save();
+        return success_response(res, 200, "Card successfully updated", card);
+    } catch (error) {
+        console.log(error);
+        return error_response(res, 500, error.message);
+    }
+};
 exports.getAllCards = async (req, res) => {
     try {
         const allCards = await Cards.find().sort({createdAt: -1});
