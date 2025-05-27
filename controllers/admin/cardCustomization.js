@@ -241,7 +241,12 @@ exports.destroyCard = async (req, res) => {
 };
 exports.getAllFrontDesignCards = async (req, res) => {
     try {
-        const allCards = await Cards.find().sort({createdAt: 1});
+        const allCards = await Cards.find({
+            frontDesign: { $ne: null },
+            backDesign: { $ne: null },
+            insideLeftDesign: { $ne: null },
+            insideRightDesign: { $ne: null }
+        }).sort({createdAt: -1});
         return success_response(res, 200, "All front design card fetch successfully", allCards);
     } catch (error) {
         console.log(error);
