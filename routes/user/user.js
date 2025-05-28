@@ -16,8 +16,8 @@ router.post('/register', register);
 router.post('/verify', verify);
 router.post('/login', login);
 router.get('/auth', middleWare, auth);
-router.post('/forget', forget);
-router.post('/reset', reset);
+// router.post('/forget', forget);
+// router.post('/reset', reset);
 router.post('/verification-email', middleWare, verification_email);
 
 module.exports = router;
