@@ -242,10 +242,10 @@ exports.destroyCard = async (req, res) => {
 exports.getAllFrontDesignCards = async (req, res) => {
     try {
         const allCards = await Cards.find({
-            frontDesign: { $ne: null },
-            backDesign: { $ne: null },
-            insideLeftDesign: { $ne: null },
-            insideRightDesign: { $ne: null }
+            frontDesign: {$ne: null},
+            backDesign: {$ne: null},
+            insideLeftDesign: {$ne: null},
+            insideRightDesign: {$ne: null}
         }).sort({createdAt: -1});
         return success_response(res, 200, "All front design card fetch successfully", allCards);
     } catch (error) {
@@ -272,11 +272,11 @@ exports.getCardForGame = async (req, res) => {
 
         const data = {
             ...card._doc,
-            frontDesign: `${API_URL}/${card?.frontDesign?.replace(/\\/g, "/")}`,
-            backDesign: `${API_URL}/${card?.backDesign?.replace(/\\/g, "/")}`,
-            insideLeftDesign: `${API_URL}/${card?.insideLeftDesign?.replace(/\\/g, "/")}`,
-            insideRightDesign: `${API_URL}/${card?.insideRightDesign?.replace(/\\/g, "/")}`,
-            video: `${API_URL}/${card?.video?.replace(/\\/g, "/")}`
+            frontDesign: card?.frontDesign ? `${API_URL}/${card?.frontDesign?.replace(/\\/g, "/")}` : null,
+            backDesign: card?.backDesign ? `${API_URL}/${card?.backDesign?.replace(/\\/g, "/")}` : null,
+            insideLeftDesign: card?.insideLeftDesign ? `${API_URL}/${card?.insideLeftDesign?.replace(/\\/g, "/")}` : null,
+            insideRightDesign: card?.insideRightDesign ? `${API_URL}/${card?.insideRightDesign?.replace(/\\/g, "/")}` : null,
+            video: card?.video ? `${API_URL}/${card?.video?.replace(/\\/g, "/")}` : null
         };
         return success_response(res, 200, "Card get successfully", data);
     } catch (error) {
