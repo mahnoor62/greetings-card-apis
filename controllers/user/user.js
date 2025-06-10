@@ -4,8 +4,6 @@ const bcrypt = require('bcryptjs');
 const nodemailer = require('nodemailer');
 const jwt = require('jsonwebtoken');
 
-
-
 exports.register = async (req, res) => {
     try {
         const {name, email, password} = req.body;
@@ -13,11 +11,17 @@ exports.register = async (req, res) => {
         if (!(name && email && password)) {
             return error_response(res, 400, "All inputs are required!");
         }
-        const oldUser = await User.findOne({email: email.toLowerCase()});
+
+        const oldUser = await User.findOne({ email: email.toLowerCase() });
 
         if (oldUser) {
-            return error_response(res, 400, "User already exist please login!");
+            if (oldUser.isVerified) {
+                return error_response(res, 400, "User already exists. Please log in.");
+            } else {
+                return error_response(res, 400, "Email is already registered. Please verify your account.");
+            }
         }
+
 
 
         const encryptedPassword = await bcrypt.hash(password, 10);
@@ -147,6 +151,7 @@ exports.auth = async (req, res) => {
         return error_response(res, 500, error.message);
     }
 };
+
 // exports.forget = async (req, res) => {
 //     try {
 //         const authEmail = req.body.email;

@@ -2,6 +2,8 @@ const Cards = require('../../models/card');
 const CardsCustomization = require('../../models/card_customization');
 const {success_response, error_response} = require('../../utils/response');
 const API_URL = process.env.API_URL;
+const {v4: uuidv4} = require('uuid');
+const BACKEND_URL = process.env.API_URL;
 
 exports.createCard = async (req, res) => {
     try {
@@ -14,6 +16,7 @@ exports.createCard = async (req, res) => {
         // cardType = cardType.toLowerCase();
 
         const createCard = await Cards.create({
+            uuid: uuidv4(),
             title, cardType, price
 
         })
@@ -74,7 +77,7 @@ exports.uploadFrontDesign = async (req, res) => {
             return error_response(res, 400, "Id is  required!");
         }
 
-        const card = await Cards.findOne({_id: id});
+        const card = await Cards.findOne({uuid: id});
 
         if (!card) {
             return error_response(res, 400, "Card not found!");
@@ -101,7 +104,7 @@ exports.uploadBackDesign = async (req, res) => {
             return error_response(res, 400, "Id is  required!");
         }
 
-        const card = await Cards.findOne({_id: id});
+        const card = await Cards.findOne({uuid: id});
 
         if (!card) {
             return error_response(res, 400, "Card not found!");
@@ -128,7 +131,7 @@ exports.uploadInsideLeftDesign = async (req, res) => {
             return error_response(res, 400, "Id is  required!");
         }
 
-        const card = await Cards.findOne({_id: id});
+        const card = await Cards.findOne({uuid: id});
 
         if (!card) {
             return error_response(res, 400, "Card not found!");
@@ -155,7 +158,7 @@ exports.uploadInsideRightDesign = async (req, res) => {
             return error_response(res, 400, "Id is  required!");
         }
 
-        const card = await Cards.findOne({_id: id});
+        const card = await Cards.findOne({uuid: id});
 
         if (!card) {
             return error_response(res, 400, "Card not found!");
@@ -182,7 +185,7 @@ exports.uploadVideo = async (req, res) => {
             return error_response(res, 400, "Id is  required!");
         }
 
-        const card = await Cards.findOne({_id: id});
+        const card = await Cards.findOne({uuid: id});
 
         if (!card) {
             return error_response(res, 400, "Card not found!");
@@ -207,7 +210,7 @@ exports.getCard = async (req, res) => {
             return error_response(res, 400, "Id is required!");
         }
 
-        const card = await Cards.findOne({_id: id});
+        const card = await Cards.findOne({uuid: id});
 
         if (!card) {
             return error_response(res, 400, "Card not found!");
@@ -264,7 +267,7 @@ exports.getCardForGame = async (req, res) => {
             return error_response(res, 400, "Id is required!");
         }
 
-        const card = await Cards.findOne({_id: id});
+        const card = await Cards.findOne({uuid: id});
 
         if (!card) {
             return error_response(res, 400, "Card not found!");
@@ -301,6 +304,99 @@ exports.uploadARTemplateData = async (req, res) => {
         return success_response(res, 200, "AR template data save successfully", customize);
     } catch (error) {
         console.log(error);
+        return error_response(res, 500, error.message);
+    }
+};
+
+
+exports.uploadARTemplate = async (req, res) => {
+    try {
+        let {uuid} = req.body;
+
+        if (!uuid) {
+            return error_response(res, 400, "Id is  required!");
+        }
+
+        let card = await Cards.findOne({
+            uuid
+        })
+
+        if (card) {
+            card = await CardsCustomization.create({
+                cardId: card._id
+            })
+        }
+
+        return success_response(res, 200, "AR template Card id save successfully", card);
+    } catch (error) {
+        console.log(error);
+        return error_response(res, 500, error.message);
+    }
+};
+
+exports.uploadTemplateImage = async (req, res) => {
+    try {
+        const {id, index} = req.body;
+
+        if (!id || index === undefined) {
+            return error_response(res, 400, "Both id and index are required!");
+        }
+
+        const card = await CardsCustomization.findById(id);
+
+        if (!card) {
+            return error_response(res, 404, "Card not found!");
+        }
+
+        if (req.file) {
+            const imagePath = req.file.path.substring(7); // remove "public/" if that's the path prefix
+            const fieldName = `templateImage${parseInt(index)}`; // e.g., index=0 → templateImage1
+
+            card[fieldName] = imagePath; // 👈 dynamic field update
+            await card.save();
+
+            return success_response(res, 200, `Image uploaded successfully at ${fieldName}`, {
+                [fieldName]: imagePath,
+                index: parseInt(index),
+                url:`${BACKEND_URL}/${imagePath}?index=${index}`
+            });
+        }
+
+        return error_response(res, 400, "No file uploaded.");
+    } catch (error) {
+        console.error(error);
+        return error_response(res, 500, error.message);
+    }
+};
+
+exports.uploadVideoForTemplate = async (req, res) => {
+    try {
+        const {id} = req.body;
+
+        if (!id) {
+            return error_response(res, 400, "Id is  required!");
+        }
+
+        const card = await CardsCustomization.findById(id);
+
+        if (!card) {
+            return error_response(res, 404, "Card not found!");
+        }
+
+        if (req.file) {
+            const videoPath = req.file.path.substring(7);
+
+            card.templateVideo = videoPath;
+            await card.save();
+
+            return success_response(res, 200, `Video uploaded successfully`, {
+                video: videoPath,
+                url: `${BACKEND_URL}/${videoPath}`,
+            });
+        }
+        return error_response(res, 400, "No file uploaded.");
+    } catch (error) {
+        console.error(error);
         return error_response(res, 500, error.message);
     }
 };

@@ -1,17 +1,18 @@
 const mongoose = require('mongoose');
+const { v4: uuidv4 } = require('uuid');
 
 const cardSchema = new mongoose.Schema({
-
+    uuid: {
+        type: String,
+        default: uuidv4,
+        index: true,
+        unique: true
+    },
     title: {type: String},
     cardType: {
         type: [String],
 
     },
-    // cardType: {
-    //     type: String,
-    //     required: true,
-    //     enum: ['birthday', 'marriage', 'mothers day', 'fathers day', 'sister day','anniversary', 'valentines day', 'marry christmas'],
-    // },
     price: {
         type: Number
     },
