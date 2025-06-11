@@ -350,7 +350,7 @@ exports.uploadARTemplate = async (req, res) => {
         // }
 
         // Create new template
-        template = await TemplateData.create({
+        const template = await TemplateData.create({
             userId: uuidv4(),
             cardId: card._id
         });
