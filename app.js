@@ -4,7 +4,7 @@ const cors = require('cors');
 
 require('dotenv').config();
 require('./database/connection').connect();
-
+require('./utils/deleteTemplateData');
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
 const apiRoutes = require('./routes/index');

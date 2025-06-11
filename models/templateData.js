@@ -17,4 +17,4 @@ module.exports = mongoose.model('template-data', templateDataSchema);
 
 
 
-// after save user data remove user template data from this table and run a crob job after a week to rmeove the data from this table 
+// after save user data remove user template data from this table and run a crob job after a week to rmeove the data from this table

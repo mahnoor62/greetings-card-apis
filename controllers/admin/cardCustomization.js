@@ -301,12 +301,12 @@ exports.uploadARTemplateData = async (req, res) => {
             return error_response(res, 400, "User id is required!");
         }
 
-        const tempalateData = await TemplateData.findOne({userId});
+        const templateData = await TemplateData.findOne({userId});
 
-        if (tempalateData) {
+        if (templateData) {
             const customize = await CardsCustomization.create({
                 userId,
-                cardId: tempalateData.cardId,
+                cardId: templateData.cardId,
                 arTemplateData,
                 templateImage0: templateData?.templateImage0 ?? null,
                 templateImage1: templateData?.templateImage1 ?? null,
@@ -315,10 +315,14 @@ exports.uploadARTemplateData = async (req, res) => {
                 templateImage4: templateData?.templateImage4 ?? null,
                 templateImage5: templateData?.templateImage5 ?? null,
                 templateVideo: templateData?.templateVideo ?? null
+            });
 
-            })
-            return success_response(res, 200, "AR template data save successfully", customize);
+            // Delete the templateData entry after successful customization creation
+            await TemplateData.deleteOne({userId});
+
+            return success_response(res, 200, "AR template data saved and template deleted successfully", customize);
         }
+        return error_response(res, 404, "No template data found for the user");
 
 
     } catch (error) {
