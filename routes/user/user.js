@@ -6,6 +6,7 @@ const {
     verify,
     login,
     auth,
+    login_verification,
     forget,
     reset,
     verification_email,
@@ -14,7 +15,9 @@ const middleWare = require('../../middleware/auth');
 
 router.post('/register', register);
 router.post('/verify', verify);
+
 router.post('/login', login);
+router.post('/login/verify', login_verification);
 router.get('/auth', middleWare, auth);
 // router.post('/forget', forget);
 // router.post('/reset', reset);

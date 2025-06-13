@@ -12,7 +12,7 @@ const templateDataSchema = new mongoose.Schema({
     templateVideo: {type: String, default: null},
 },{timestamps:true});
 
-module.exports = mongoose.model('template-data', templateDataSchema);
+module.exports = mongoose.model('temporary-template-data', templateDataSchema);
 
 
 

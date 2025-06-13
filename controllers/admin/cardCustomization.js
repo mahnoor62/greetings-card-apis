@@ -389,11 +389,14 @@ exports.uploadTemplateImage = async (req, res) => {
             card[fieldName] = imagePath; // 👈 dynamic field update
             await card.save();
 
+
             return success_response(res, 200, `Image uploaded successfully at ${fieldName}`, {
                 [fieldName]: imagePath,
                 index: parseInt(index),
-                url: `${BACKEND_URL}/${imagePath}?index=${index}`
+                url: `${BACKEND_URL}/${imagePath}?index=${index}`,
+                card
             });
+
         }
 
         return error_response(res, 400, "No file uploaded.");
@@ -423,12 +426,36 @@ exports.uploadVideoForTemplate = async (req, res) => {
             card.templateVideo = videoPath;
             await card.save();
 
+
             return success_response(res, 200, `Video uploaded successfully`, {
                 video: videoPath,
                 url: `${BACKEND_URL}/${videoPath}`,
+                card
             });
         }
         return error_response(res, 400, "No file uploaded.");
+    } catch (error) {
+        console.error(error);
+        return error_response(res, 500, error.message);
+    }
+};
+
+
+exports.getTemplateData = async (req, res) => {
+    try {
+        const {userId} = req.params;
+
+        if (!userId) {
+            return error_response(res, 400, "User id is  required!");
+        }
+
+        const card = await TemplateData.findOne({userId});
+
+        if (!card) {
+            return error_response(res, 404, "Template data  not found!");
+        }
+
+        return success_response(res, 200, "Template data fetch successfully", card);
     } catch (error) {
         console.error(error);
         return error_response(res, 500, error.message);
