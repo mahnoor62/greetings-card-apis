@@ -43,7 +43,7 @@ exports.register = async (req, res) => {
 
         const {MAIL_USER, MAIL_HOST, MAIL_PASS, MAIL_PORT, APP_URL, MAIL_FROM, APP_NAME} = process.env;
 
-        const appUrl = APP_URL + "/verify?token=" + jwtToken;
+        const appUrl = APP_URL + "/verification?token=" + jwtToken;
 
         let transport = nodemailer.createTransport({
             host: MAIL_HOST,
