@@ -24,7 +24,7 @@ router.post('/upload-template-video', uploadMiddleware('templateVideo').single('
 router.get('/get-all', middleWare, getAllCards);
 router.get('/get-all-front-design', getAllFrontDesignCards);
 router.get('/get/:uuid', middleWare, getCard);
-router.get('/get/data/:id', getCardForGame);
+router.get('/get/data/:uuid', getCardForGame);
 router.delete('/destroy/:id', middleWare, destroyCard);
 router.post('/upload-front-design', [middleWare, uploadMiddleware('Cards').single('frontDesign')], uploadFrontDesign);
 router.post('/upload-back-design', [middleWare, uploadMiddleware('Cards').single('backDesign')], uploadBackDesign);

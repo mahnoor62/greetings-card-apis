@@ -213,7 +213,6 @@ exports.getCard = async (req, res) => {
 
         const card = await Cards.findOne({uuid: uuid});
 
-  console.log("card-----", card)
 
         if (!card) {
             return error_response(res, 400, "Card not found!");
@@ -263,14 +262,15 @@ exports.getAllFrontDesignCards = async (req, res) => {
 exports.getCardForGame = async (req, res) => {
     try {
 
+        const {uuid} = req.params;
 
-        const {id} = req.params;
 
-        if (!id) {
+        console.log("uuid0", uuid)
+        if (!uuid) {
             return error_response(res, 400, "Id is required!");
         }
 
-        const card = await Cards.findOne({uuid: id});
+        const card = await Cards.findOne({uuid});
 
         if (!card) {
             return error_response(res, 400, "Card not found!");
