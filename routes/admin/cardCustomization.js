@@ -15,7 +15,7 @@ const middleWare = require("../../middleware/admin");
 
 
 router.post('/create', middleWare, createCard);
-router.get('/get/:userId', getTemplateData);
+router.get('/get/user/:userId', getTemplateData);
 router.post('/edit', middleWare, EditCard);
 router.post('/upload-template-data', uploadARTemplateData);
 router.post('/upload-card-id', uploadARTemplate);
@@ -23,7 +23,7 @@ router.post('/upload-image', uploadMiddleware('templateImages').single('image'),
 router.post('/upload-template-video', uploadMiddleware('templateVideo').single('video'), uploadVideoForTemplate);
 router.get('/get-all', middleWare, getAllCards);
 router.get('/get-all-front-design', getAllFrontDesignCards);
-router.get('/get/:id', middleWare, getCard);
+router.get('/get/:uuid', middleWare, getCard);
 router.get('/get/data/:id', getCardForGame);
 router.delete('/destroy/:id', middleWare, destroyCard);
 router.post('/upload-front-design', [middleWare, uploadMiddleware('Cards').single('frontDesign')], uploadFrontDesign);

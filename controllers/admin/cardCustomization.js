@@ -205,13 +205,15 @@ exports.uploadVideo = async (req, res) => {
 };
 exports.getCard = async (req, res) => {
     try {
-        const {id} = req.params;
+        const uuid= req.params.uuid;
 
-        if (!id) {
+        if (!uuid) {
             return error_response(res, 400, "Id is required!");
         }
 
-        const card = await Cards.findOne({uuid: id});
+        const card = await Cards.findOne({uuid: uuid});
+
+  console.log("card-----", card)
 
         if (!card) {
             return error_response(res, 400, "Card not found!");
