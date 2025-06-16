@@ -264,8 +264,6 @@ exports.getCardForGame = async (req, res) => {
 
         const {uuid} = req.params;
 
-
-        console.log("uuid0", uuid)
         if (!uuid) {
             return error_response(res, 400, "Id is required!");
         }
