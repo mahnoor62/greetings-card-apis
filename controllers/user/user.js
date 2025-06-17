@@ -393,3 +393,37 @@ exports.auth = async (req, res) => {
         return error_response(res, 500, error.message);
     }
 };
+
+exports.signIn_with_google = async (req, res) => {
+    try {
+        const {email, name} = req.body;
+        const checkUser = await User.findOne({email});
+        if (checkUser) {
+            const payload = {user_id: checkUser._id, user_email: checkUser.email}
+            const token = jwt.sign(payload, process.env.TOKEN_KEY, {
+                expiresIn: process.env.TOKEN_EXPIRE
+            });
+            const user = {
+                ...checkUser.toObject(),
+                token
+            };
+
+            return success_response(res, 200, "User login successfully", user);
+        }
+        const newUser = await User.create({
+            email, name, isVerified: true
+        });
+        const payload = {user_id: newUser._id, user_email: newUser.email}
+        const token = jwt.sign(payload, process.env.TOKEN_KEY, {
+            expiresIn: process.env.TOKEN_EXPIRE
+        })
+        const userWithToken = {
+            ...newUser.toObject(),
+            token
+        };
+        return success_response(res, 200, "User login successfully", userWithToken);
+    } catch (error) {
+        console.log(error);
+        return error_response(res, 500, error.message);
+    }
+}
