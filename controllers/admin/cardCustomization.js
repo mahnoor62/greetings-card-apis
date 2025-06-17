@@ -60,6 +60,7 @@ exports.EditCard = async (req, res) => {
         return error_response(res, 500, error.message);
     }
 };
+
 exports.getAllCards = async (req, res) => {
     try {
         const allCards = await Cards.find().sort({createdAt: -1});
@@ -69,6 +70,7 @@ exports.getAllCards = async (req, res) => {
         return error_response(res, 500, error.message);
     }
 };
+
 exports.uploadFrontDesign = async (req, res) => {
     try {
 
@@ -203,9 +205,10 @@ exports.uploadVideo = async (req, res) => {
         return error_response(res, 500, error.message);
     }
 };
+
 exports.getCard = async (req, res) => {
     try {
-        const uuid= req.params.uuid;
+        const uuid = req.params.uuid;
 
         if (!uuid) {
             return error_response(res, 400, "Id is required!");
@@ -244,6 +247,7 @@ exports.destroyCard = async (req, res) => {
         return error_response(res, 500, error.message);
     }
 };
+
 exports.getAllFrontDesignCards = async (req, res) => {
     try {
         const allCards = await Cards.find({
@@ -307,7 +311,7 @@ exports.uploadARTemplateData = async (req, res) => {
             const customize = await CardsCustomization.create({
                 userId,
                 cardId: templateData.cardId,
-                arTemplateData,
+                arTemplateData: templateData.arTemplateData,
                 templateImage0: templateData?.templateImage0 ?? null,
                 templateImage1: templateData?.templateImage1 ?? null,
                 templateImage2: templateData?.templateImage2 ?? null,
@@ -330,7 +334,7 @@ exports.uploadARTemplateData = async (req, res) => {
         return error_response(res, 500, error.message);
     }
 };
-
+// when click on card template create and than upload image one by one and video
 
 exports.uploadARTemplate = async (req, res) => {
     try {
@@ -346,13 +350,6 @@ exports.uploadARTemplate = async (req, res) => {
             return error_response(res, 404, "Card not found!");
         }
 
-        // Check if already exists
-        // let template = await TemplateData.findOne({cardId: card._id});
-        //
-        // if (template) {
-        //     return success_response(res, 200, "Template already exists", template);
-        // }
-
         // Create new template
         const template = await TemplateData.create({
             userId: uuidv4(),
@@ -366,7 +363,6 @@ exports.uploadARTemplate = async (req, res) => {
         return error_response(res, 500, error.message);
     }
 };
-
 
 exports.uploadTemplateImage = async (req, res) => {
     try {
@@ -434,6 +430,28 @@ exports.uploadVideoForTemplate = async (req, res) => {
             });
         }
         return error_response(res, 400, "No file uploaded.");
+    } catch (error) {
+        console.error(error);
+        return error_response(res, 500, error.message);
+    }
+};
+exports.uploadArTemplateJson = async (req, res) => {
+    try {
+        const {userId, data} = req.body;
+
+        if (!(userId && data)) {
+            return error_response(res, 400, "All inputs are required!");
+        }
+        const card = await TemplateData.findOne({userId});
+
+
+        if (!card) {
+            return error_response(res, 404, "Template data  not found!");
+        }
+        card.arTemplateData = data;
+        await card.save();
+
+        return success_response(res, 200, "Json save  successfully", card);
     } catch (error) {
         console.error(error);
         return error_response(res, 500, error.message);

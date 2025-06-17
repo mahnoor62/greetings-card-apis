@@ -33,11 +33,11 @@ app.use('/user', UserRoutes);
 //admin routes:
 const Admin = require('./admin/admin');
 const Category = require('./admin/category');
-const Bank = require('./admin/bank');
+
 
 app.use('/admin', Admin);
 app.use('/admin/category', Category);
-app.use('/admin', Bank);
+
 
 
 // card customization routes

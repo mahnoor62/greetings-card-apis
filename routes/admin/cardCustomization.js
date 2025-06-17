@@ -7,7 +7,7 @@ const {
     uploadBackDesign,
     uploadInsideLeftDesign,
     uploadInsideRightDesign,
-    uploadVideo, getAllFrontDesignCards, getCardForGame,
+    uploadVideo, getAllFrontDesignCards, getCardForGame,uploadArTemplateJson,
     getCard, destroyCard, uploadARTemplateData, EditCard, uploadARTemplate, uploadTemplateImage, uploadVideoForTemplate,getTemplateData,
 } = require('../../controllers/admin/cardCustomization');
 const {uploadMiddleware, uploadMusicFile} = require('../../utils/multer');
@@ -18,6 +18,7 @@ router.post('/create', middleWare, createCard);
 router.get('/get/user/:userId', getTemplateData);
 router.post('/edit', middleWare, EditCard);
 router.post('/upload-template-data', uploadARTemplateData);
+router.post('/upload-ar-data', uploadArTemplateJson);
 router.post('/upload-card-id', uploadARTemplate);
 router.post('/upload-image', uploadMiddleware('templateImages').single('image'), uploadTemplateImage);
 router.post('/upload-template-video', uploadMiddleware('templateVideo').single('video'), uploadVideoForTemplate);
