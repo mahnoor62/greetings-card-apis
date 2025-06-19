@@ -318,6 +318,10 @@ exports.uploadARTemplateData = async (req, res) => {
                 templateImage3: templateData?.templateImage3 ?? null,
                 templateImage4: templateData?.templateImage4 ?? null,
                 templateImage5: templateData?.templateImage5 ?? null,
+                templateImage6: templateData?.templateImage6 ?? null,
+                templateImage7: templateData?.templateImage7 ?? null,
+                templateImage8: templateData?.templateImage8 ?? null,
+                templateImage9: templateData?.templateImage9 ?? null,
                 templateVideo: templateData?.templateVideo ?? null
             });
 

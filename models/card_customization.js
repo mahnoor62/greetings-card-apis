@@ -10,6 +10,10 @@ const cardCustomizationSchema = new mongoose.Schema({
     templateImage3: {type: String, default: null},
     templateImage4: {type: String, default: null},
     templateImage5: {type: String, default: null},
+    templateImage6: {type: String, default: null},
+    templateImage7: {type: String, default: null},
+    templateImage8: {type: String, default: null},
+    templateImage9: {type: String, default: null},
     templateVideo: {type: String, default: null},
     isPaid: {type: Boolean, default: false},
 });
